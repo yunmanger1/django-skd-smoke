@@ -210,8 +210,10 @@ def generate_test_method(urlname, status, method='GET', initialize=None,
             prepared_url_kwargs = url_kwargs(self)
         else:
             prepared_url_kwargs = url_kwargs or {}
-
-        resolved_url = resolve_url(urlname, **prepared_url_kwargs)
+        prepared_url_args = ()
+        if isinstance(prepared_url_kwargs, (list, tuple)):
+            prepared_url_args, prepared_url_kwargs = prepared_url_kwargs
+        resolved_url = resolve_url(urlname, *prepared_url_args, **prepared_url_kwargs)
 
         if user_credentials:
             if callable(user_credentials):
